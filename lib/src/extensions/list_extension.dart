@@ -20,8 +20,7 @@ extension StyledList<E> on List<Widget> {
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
         children: separator != null && isNotEmpty
-            ? (expand((child) => [child, separator]).toList()
-              ..removeLast())
+            ? (expand((child) => [child, separator]).toList()..removeLast())
             : this,
       );
 
@@ -44,8 +43,7 @@ extension StyledList<E> on List<Widget> {
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
         children: separator != null && isNotEmpty
-            ? (expand((child) => [child, separator]).toList()
-              ..removeLast())
+            ? (expand((child) => [child, separator]).toList()..removeLast())
             : this,
       );
 
@@ -91,5 +89,71 @@ extension StyledList<E> on List<Widget> {
         verticalDirection: verticalDirection,
         clipBehavior: clipBehavior,
         children: this,
+      );
+
+// shortcut for column, which defaults to main axis MIN size
+  Widget toColumnMin({
+    Key? key,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisSize mainAxisSize = MainAxisSize.min,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    TextDirection? textDirection,
+    VerticalDirection verticalDirection = VerticalDirection.down,
+    TextBaseline? textBaseline,
+    Widget? separator,
+  }) =>
+      toColumn(
+        key: key,
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        crossAxisAlignment: crossAxisAlignment,
+        textDirection: textDirection,
+        verticalDirection: verticalDirection,
+        textBaseline: textBaseline,
+        separator: separator,
+      );
+
+  // shortcut for row, which defaults to main axis MIN size
+  Widget toRowMin({
+    Key? key,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisSize mainAxisSize = MainAxisSize.min,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    TextDirection? textDirection,
+    VerticalDirection verticalDirection = VerticalDirection.down,
+    TextBaseline? textBaseline,
+    Widget? separator,
+  }) =>
+      toRow(
+        key: key,
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        crossAxisAlignment: crossAxisAlignment,
+        textDirection: textDirection,
+        verticalDirection: verticalDirection,
+        textBaseline: textBaseline,
+        separator: separator,
+      );
+
+  // shortcut for row, which defaults to spaceBetween alignment on MAIN axis
+  Widget toRowBetween({
+    Key? key,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    TextDirection? textDirection,
+    VerticalDirection verticalDirection = VerticalDirection.down,
+    TextBaseline? textBaseline,
+    Widget? separator,
+  }) =>
+      toRow(
+        key: key,
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        crossAxisAlignment: crossAxisAlignment,
+        textDirection: textDirection,
+        verticalDirection: verticalDirection,
+        textBaseline: textBaseline,
+        separator: separator,
       );
 }
