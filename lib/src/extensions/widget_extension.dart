@@ -63,6 +63,32 @@ extension StyledWidget on Widget {
         : Padding(key: key, padding: padding, child: this);
   }
 
+  // alias for padding for widgets with "padding" property
+  Widget pad({
+    Key? key,
+    double? all,
+    double? horizontal,
+    double? vertical,
+    double? top,
+    double? bottom,
+    double? left,
+    double? right,
+    EdgeInsetsGeometry? padding,
+    bool animate = false,
+  }) =>
+      this.padding(
+        key: key,
+        all: all,
+        horizontal: horizontal,
+        vertical: vertical,
+        top: top,
+        bottom: bottom,
+        left: left,
+        right: right,
+        padding: padding,
+        animate: animate,
+      );
+
   Widget paddingDirectional({
     Key? key,
     double? all,
@@ -1187,6 +1213,23 @@ extension StyledWidget on Widget {
               child: this,
             );
 
+  Widget positionedFill({
+    Key? key,
+    double? left = 0,
+    double? top = 0,
+    double? right = 0,
+    double? bottom = 0,
+    bool animate = false,
+  }) =>
+      positioned(
+        key: key,
+        left: left,
+        top: top,
+        right: right,
+        bottom: bottom,
+        animate: animate,
+      );
+
   Widget safeArea({
     Key? key,
     bool top = true,
@@ -1309,9 +1352,9 @@ extension StyledWidget on Widget {
       );
 
   // TODO: FEATURE: animate aspectRatio widget
-  Widget aspectRatio({
+  Widget aspectRatio(
+    double aspectRatio, {
     Key? key,
-    required double aspectRatio,
   }) =>
       AspectRatio(
         key: key,
@@ -1452,4 +1495,308 @@ extension StyledWidget on Widget {
         hitTestBehavior: hitTestBehavior,
         child: this,
       );
+
+  // DefaultTextStyle wrapper
+  Widget textStyle({
+    bool merge = true,
+    TextStyle? style,
+    TextAlign? textAlign,
+    bool? softWrap,
+    TextOverflow? overflow,
+    int? maxLines,
+    TextWidthBasis? textWidthBasis,
+    Color? color,
+    double? fontSize,
+    FontWeight? fontWeight,
+  }) {
+    style ??= TextStyle(
+      color: color,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+    );
+    return merge
+        ? DefaultTextStyle.merge(
+            style: style,
+            textAlign: textAlign,
+            softWrap: softWrap,
+            overflow: overflow,
+            maxLines: maxLines,
+            textWidthBasis: textWidthBasis,
+            child: this,
+          )
+        : DefaultTextStyle(
+            style: style,
+            textAlign: textAlign,
+            softWrap: softWrap ?? true,
+            overflow: overflow ?? TextOverflow.clip,
+            maxLines: maxLines,
+            textWidthBasis: textWidthBasis ?? TextWidthBasis.parent,
+            child: this,
+          );
+  }
+
+  Widget theme(
+    ThemeData data, {
+    Key? key,
+  }) =>
+      Theme(
+        key: key,
+        data: data,
+        child: this,
+      );
+
+  Widget iconTheme({
+    Key? key,
+    IconThemeData? data,
+    Color? color,
+    double? size,
+  }) =>
+      IconTheme(
+        key: key,
+        data: data ?? IconThemeData(color: color, size: size),
+        child: this,
+      );
+
+  Widget scrollbar({
+    ScrollController? controller,
+    bool? thumbVisibility,
+    bool? trackVisibility,
+    double? thickness,
+    Radius? radius,
+    ScrollNotificationPredicate? notificationPredicate,
+    bool? interactive,
+    ScrollbarOrientation? scrollbarOrientation,
+    bool resetPadding = false,
+  }) {
+    final scrollbar = Scrollbar(
+      controller: controller,
+      thumbVisibility: thumbVisibility,
+      trackVisibility: trackVisibility,
+      thickness: thickness,
+      radius: radius,
+      notificationPredicate: notificationPredicate,
+      interactive: interactive,
+      scrollbarOrientation: scrollbarOrientation,
+      child: this,
+    );
+    if (resetPadding) {
+      return Builder(
+        builder: (context) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(padding: EdgeInsets.zero),
+            child: scrollbar,
+          );
+        },
+      );
+    } else {
+      return scrollbar;
+    }
+  }
+
+  Widget rotated({
+    Key? key,
+    required int quarterTurns,
+  }) =>
+      RotatedBox(
+        key: key,
+        quarterTurns: quarterTurns,
+        child: this,
+      );
+
+  // shorthand for .decorated with max radius
+  Widget rounded({
+    Key? key,
+    Color? color,
+    DecorationImage? image,
+    BoxBorder? border,
+    BorderRadius? borderRadius,
+    List<BoxShadow>? boxShadow,
+    Gradient? gradient,
+    BlendMode? backgroundBlendMode,
+    BoxShape shape = BoxShape.rectangle,
+    DecorationPosition position = DecorationPosition.background,
+    bool animate = false,
+    double? radius,
+  }) =>
+      decorated(
+        key: key,
+        color: color,
+        image: image,
+        border: border,
+        borderRadius: borderRadius ?? BorderRadius.circular(radius ?? 9999),
+        boxShadow: boxShadow,
+        gradient: gradient,
+        backgroundBlendMode: backgroundBlendMode,
+        shape: shape,
+        position: position,
+        animate: animate,
+      );
+
+  Widget removePadding({
+    Key? key,
+    required BuildContext context,
+    bool removeLeft = false,
+    bool removeTop = false,
+    bool removeRight = false,
+    bool removeBottom = false,
+  }) =>
+      MediaQuery.removePadding(
+        key: key,
+        context: context,
+        removeLeft: removeLeft,
+        removeTop: removeTop,
+        removeRight: removeRight,
+        removeBottom: removeBottom,
+        child: this,
+      );
+
+  Widget removePaddingVertical({
+    Key? key,
+    required BuildContext context,
+  }) =>
+      removePadding(
+        context: context,
+        removeTop: true,
+        removeBottom: true,
+      );
+
+  Widget tappable({
+    Key? key,
+    GestureTapCallback? onTap,
+    GestureTapCallback? onDoubleTap,
+    GestureLongPressCallback? onLongPress,
+    HitTestBehavior? behavior = HitTestBehavior.translucent,
+  }) =>
+      gestures(
+        onTap: onTap,
+        onDoubleTap: onDoubleTap,
+        onLongPress: onLongPress,
+        behavior: behavior,
+      );
+
+  Widget onTap(
+    GestureTapCallback? onTap, {
+    Key? key,
+    HitTestBehavior? behavior = HitTestBehavior.translucent,
+  }) =>
+      tappable(onTap: onTap, behavior: behavior);
+
+  Widget tooltip({
+    Key? key,
+    String? message,
+    InlineSpan? richMessage,
+    BoxConstraints? constraints,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
+    double? verticalOffset,
+    bool? preferBelow,
+    bool? excludeFromSemantics,
+    Decoration? decoration,
+    TextStyle? textStyle,
+    TextAlign? textAlign,
+    Duration? waitDuration,
+    Duration? showDuration,
+    Duration? exitDuration,
+    bool enableTapToDismiss = true,
+    TooltipTriggerMode? triggerMode,
+    bool? enableFeedback,
+    void Function()? onTriggered,
+    MouseCursor? mouseCursor,
+    bool? ignorePointer,
+    Widget? child,
+  }) =>
+      Tooltip(
+        key: key,
+        message: message,
+        richMessage: richMessage,
+        constraints: constraints,
+        padding: padding,
+        margin: margin,
+        verticalOffset: verticalOffset,
+        preferBelow: preferBelow,
+        excludeFromSemantics: excludeFromSemantics,
+        decoration: decoration,
+        textStyle: textStyle,
+        textAlign: textAlign,
+        waitDuration: waitDuration,
+        showDuration: showDuration,
+        exitDuration: exitDuration,
+        enableTapToDismiss: enableTapToDismiss,
+        triggerMode: triggerMode,
+        enableFeedback: enableFeedback,
+        onTriggered: onTriggered,
+        mouseCursor: mouseCursor,
+        ignorePointer: ignorePointer,
+      );
+
+  Widget simpleTooltip(
+    String? message, {
+    Key? key,
+    InlineSpan? richMessage,
+    EdgeInsetsGeometry? padding =
+        const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+    EdgeInsetsGeometry? margin = EdgeInsets.zero,
+    bool preferBelow = false,
+  }) =>
+      Tooltip(
+        key: key,
+        message: message,
+        richMessage: richMessage,
+        preferBelow: preferBelow,
+        padding: padding,
+        margin: margin,
+        child: this,
+      );
+
+  PreferredSize preferredSize({
+    Key? key,
+    Size? size,
+    double? height,
+    double? width,
+  }) =>
+      PreferredSize(
+        key: key,
+        preferredSize: size ??
+            (height != null ? Size.fromHeight(height) : null) ??
+            (width != null ? Size.fromWidth(width) : null) ??
+            Size.zero,
+        child: this,
+      );
+}
+
+extension SliverExt on Widget {
+  Widget toSliver({Key? key}) => SliverToBoxAdapter(key: key, child: this);
+
+  Widget toSliverFillRemaining({
+    Key? key,
+    bool hasScrollBody = true,
+    bool fillOverscroll = false,
+  }) =>
+      SliverFillRemaining(
+        key: key,
+        hasScrollBody: hasScrollBody,
+        fillOverscroll: fillOverscroll,
+        child: this,
+      );
+
+  Widget sliverPadding({
+    Key? key,
+    double? all,
+    double? horizontal,
+    double? vertical,
+    double? top,
+    double? bottom,
+    double? left,
+    double? right,
+    EdgeInsetsGeometry? padding,
+  }) {
+    padding ??= EdgeInsets.only(
+      top: top ?? vertical ?? all ?? 0.0,
+      bottom: bottom ?? vertical ?? all ?? 0.0,
+      left: left ?? horizontal ?? all ?? 0.0,
+      right: right ?? horizontal ?? all ?? 0.0,
+    );
+
+    return SliverPadding(key: key, padding: padding, sliver: this);
+  }
 }
