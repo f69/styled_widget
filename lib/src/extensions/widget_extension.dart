@@ -669,32 +669,23 @@ extension StyledWidget on Widget {
   }) {
     final double offset = elevation / 2;
     final int colorOffset = (40 * curve).toInt();
-    int adjustColor(int color, int colorOffset) {
-      final int colorVal = color + colorOffset;
-      if (colorVal > 255) {
-        return 255;
-      } else if (colorVal < 0) {
-        return 0;
-      }
-      return colorVal;
-    }
 
     final BoxDecoration decoration = BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
-          Color.fromRGBO(
-            adjustColor(backgroundColor.red, colorOffset),
-            adjustColor(backgroundColor.green, colorOffset),
-            adjustColor(backgroundColor.blue, colorOffset),
-            1.0,
+          Color.from(
+            red: backgroundColor.r * colorOffset,
+            green: backgroundColor.g * colorOffset,
+            blue: backgroundColor.b * colorOffset,
+            alpha: 1.0,
           ),
-          Color.fromRGBO(
-            adjustColor(backgroundColor.red, -colorOffset),
-            adjustColor(backgroundColor.green, -colorOffset),
-            adjustColor(backgroundColor.blue, -colorOffset),
-            1.0,
+          Color.from(
+            red: backgroundColor.r * -colorOffset,
+            green: backgroundColor.g * -colorOffset,
+            blue: backgroundColor.b * -colorOffset,
+            alpha: 1.0,
           ),
         ],
         // stops: [0.90, 0.95],

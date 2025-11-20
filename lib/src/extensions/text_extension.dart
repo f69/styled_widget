@@ -10,7 +10,8 @@ extension StyledText<T extends Text> on T {
     Locale? locale,
     bool? softWrap,
     TextOverflow? overflow,
-    double? textScaleFactor,
+    // double? textScaleFactor,
+    TextScaler? textScaler,
     int? maxLines,
     String? semanticsLabel,
     TextWidthBasis? textWidthBasis,
@@ -27,7 +28,8 @@ extension StyledText<T extends Text> on T {
               semanticsLabel: semanticsLabel ?? this.semanticsLabel,
               softWrap: softWrap ?? this.softWrap,
               textDirection: textDirection ?? this.textDirection,
-              textScaleFactor: textScaleFactor ?? this.textScaleFactor,
+              // textScaleFactor: textScaleFactor ?? this.textScaleFactor,
+              textScaler: textScaler ?? this.textScaler,
               textWidthBasis: textWidthBasis ?? this.textWidthBasis,
             )
           : Text(
@@ -41,7 +43,8 @@ extension StyledText<T extends Text> on T {
               semanticsLabel: semanticsLabel ?? this.semanticsLabel,
               softWrap: softWrap ?? this.softWrap,
               textDirection: textDirection ?? this.textDirection,
-              textScaleFactor: textScaleFactor ?? this.textScaleFactor,
+              // textScaleFactor: textScaleFactor ?? this.textScaleFactor,
+              textScaler: textScaler ?? this.textScaler,
               textWidthBasis: textWidthBasis ?? this.textWidthBasis,
             )) as T;
 
@@ -72,8 +75,10 @@ extension StyledText<T extends Text> on T {
         ),
       );
 
-  T textScale(double scaleFactor) =>
-      copyWith(textScaleFactor: scaleFactor);
+  // T textScale(double scaleFactor) =>
+  //     copyWith(textScaleFactor: scaleFactor);
+
+  T textScaler(TextScaler scaler) => copyWith(textScaler: scaler);
 
   T bold() => copyWith(
         style: (style ?? const TextStyle()).copyWith(
@@ -144,7 +149,7 @@ extension StyledText<T extends Text> on T {
         _elevationOpacityCurve(elevation) * opacityRatio;
 
     final Shadow shadow = Shadow(
-      color: color.withOpacity(calculatedOpacity),
+      color: color.withValues(alpha: calculatedOpacity),
       blurRadius: elevation,
       offset: Offset(sin(angle) * elevation, cos(angle) * elevation),
     );

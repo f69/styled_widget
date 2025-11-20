@@ -1,13 +1,13 @@
 name: styled_widget_example
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
-  styled_widget:
-    path: ../
   flutter:
     sdk: flutter
+  styled_widget:
+    path: ../
 
 dev_dependencies:
   flutter_test:

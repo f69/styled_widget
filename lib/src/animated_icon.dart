@@ -2,30 +2,13 @@ part of '../styled_widget.dart';
 
 // TODO: why extend icon
 class _StyledAnimatedIconContainer extends Icon {
-  @override
-  final IconData? icon;
-  @override
-  final double? size;
-  @override
-  final Color? color;
-  @override
-  final String? semanticLabel;
-  @override
-  final TextDirection? textDirection;
-
   const _StyledAnimatedIconContainer(
-    this.icon, {
-    this.color,
-    this.semanticLabel,
-    this.size,
-    this.textDirection,
-  }) : super(
-          icon,
-          color: color,
-          semanticLabel: semanticLabel,
-          size: size,
-          textDirection: textDirection,
-        );
+    super.icon, {
+    super.color,
+    super.semanticLabel,
+    super.size,
+    super.textDirection,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +37,13 @@ class _AnimatedIcon extends ImplicitlyAnimatedWidget {
   /// The [curve] and [duration] arguments must not be null.
   const _AnimatedIcon(
     this.icon, {
-    Key? key,
     this.color,
     this.semanticLabel,
     this.size,
     this.textDirection,
-    Curve curve = Curves.linear,
-    required Duration duration,
-  }) : super(
-          key: key,
-          curve: curve,
-          duration: duration,
-        );
+    super.curve,
+    required super.duration,
+  });
 
   final IconData? icon;
   final double? size;

@@ -1,3 +1,7 @@
+## 0.5.0
+* Updates minimum SDK version to 2.17
+* Removes warnings (mostly deprecations) for Flutter 3.38
+
 ## 0.4.1
 * Added `toWrap`
 * Added padding parameter to `scrollable`

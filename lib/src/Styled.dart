@@ -1,25 +1,20 @@
 part of '../styled_widget.dart';
 
 class Styled {
+  Styled._();
+
   static Widget builder({
     required Widget Function(BuildContext context, Widget child) builder,
     required Widget child,
   }) =>
-      Builder(
-        builder: (context) => builder(
-          context,
-          child,
-        ),
-      );
+      Builder(builder: (context) => builder(context, child));
 
   static Widget widget({Widget? child}) =>
       child ??
       LimitedBox(
         maxWidth: 0.0,
         maxHeight: 0.0,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-        ),
+        child: ConstrainedBox(constraints: const BoxConstraints.expand()),
       );
 
   static Text text(
@@ -31,7 +26,8 @@ class Styled {
     Locale? locale,
     bool? softWrap,
     TextOverflow? overflow,
-    double? textScaleFactor,
+    @Deprecated('Use textScaler instead.') double? textScaleFactor,
+    TextScaler? textScaler,
     int? maxLines,
     String? semanticsLabel,
     TextWidthBasis? textWidthBasis,
@@ -49,7 +45,7 @@ class Styled {
               style: style,
               textAlign: textAlign,
               textDirection: textDirection,
-              textScaleFactor: textScaleFactor,
+              textScaler: textScaler,
               textWidthBasis: textWidthBasis,
             )
           : Text(
@@ -63,7 +59,7 @@ class Styled {
               style: style,
               textAlign: textAlign,
               textDirection: textDirection,
-              textScaleFactor: textScaleFactor,
+              textScaler: textScaler,
               textWidthBasis: textWidthBasis,
             );
 
