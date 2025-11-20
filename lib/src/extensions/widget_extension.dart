@@ -3,16 +3,6 @@ part of '../../styled_widget.dart';
 typedef GestureOnTapChangeCallback = void Function(bool tapState);
 
 extension StyledWidget on Widget {
-  _StyledAnimatedModel _getAnimation(BuildContext context) {
-    final _StyledAnimatedModel? animation =
-        _StyledInheritedAnimation.of(context)?.animation;
-    assert(
-      animation != null,
-      '[styled_widget]: You can`t animate without defining the animation. Call the method animate() higher in your widget hierarchy to define an animation',
-    );
-    return animation!;
-  }
-
   /// animated all properties before this method
   Widget animate(
     Duration duration,
@@ -48,36 +38,30 @@ extension StyledWidget on Widget {
     double? bottom,
     double? left,
     double? right,
+    EdgeInsetsGeometry? padding,
     bool animate = false,
-  }) =>
-      animate
-          ? Builder(
-              key: key,
-              builder: (BuildContext context) {
-                final _StyledAnimatedModel animation = _getAnimation(context);
-                return AnimatedPadding(
-                  padding: EdgeInsets.only(
-                    top: top ?? vertical ?? all ?? 0.0,
-                    bottom: bottom ?? vertical ?? all ?? 0.0,
-                    left: left ?? horizontal ?? all ?? 0.0,
-                    right: right ?? horizontal ?? all ?? 0.0,
-                  ),
-                  duration: animation.duration,
-                  curve: animation.curve,
-                  child: this,
-                );
-              },
-            )
-          : Padding(
-              key: key,
-              padding: EdgeInsets.only(
-                top: top ?? vertical ?? all ?? 0.0,
-                bottom: bottom ?? vertical ?? all ?? 0.0,
-                left: left ?? horizontal ?? all ?? 0.0,
-                right: right ?? horizontal ?? all ?? 0.0,
-              ),
-              child: this,
-            );
+  }) {
+    padding ??= EdgeInsets.only(
+      top: top ?? vertical ?? all ?? 0.0,
+      bottom: bottom ?? vertical ?? all ?? 0.0,
+      left: left ?? horizontal ?? all ?? 0.0,
+      right: right ?? horizontal ?? all ?? 0.0,
+    );
+
+    return animate
+        ? _StyledAnimatedBuilder(
+            key: key,
+            builder: (animation) {
+              return AnimatedPadding(
+                padding: padding!,
+                duration: animation.duration,
+                curve: animation.curve,
+                child: this,
+              );
+            },
+          )
+        : Padding(key: key, padding: padding, child: this);
+  }
 
   Widget paddingDirectional({
     Key? key,
@@ -88,36 +72,29 @@ extension StyledWidget on Widget {
     double? bottom,
     double? start,
     double? end,
+    EdgeInsetsGeometry? padding,
     bool animate = false,
-  }) =>
-      animate
-          ? Builder(
-              key: key,
-              builder: (BuildContext context) {
-                final _StyledAnimatedModel animation = _getAnimation(context);
-                return AnimatedPadding(
-                  padding: EdgeInsetsDirectional.only(
-                    top: top ?? vertical ?? all ?? 0.0,
-                    bottom: bottom ?? vertical ?? all ?? 0.0,
-                    start: start ?? horizontal ?? all ?? 0.0,
-                    end: end ?? horizontal ?? all ?? 0.0,
-                  ),
-                  duration: animation.duration,
-                  curve: animation.curve,
-                  child: this,
-                );
-              },
-            )
-          : Padding(
-              key: key,
-              padding: EdgeInsetsDirectional.only(
-                top: top ?? vertical ?? all ?? 0.0,
-                bottom: bottom ?? vertical ?? all ?? 0.0,
-                start: start ?? horizontal ?? all ?? 0.0,
-                end: end ?? horizontal ?? all ?? 0.0,
-              ),
-              child: this,
-            );
+  }) {
+    padding ??= EdgeInsetsDirectional.only(
+      top: top ?? vertical ?? all ?? 0.0,
+      bottom: bottom ?? vertical ?? all ?? 0.0,
+      start: start ?? horizontal ?? all ?? 0.0,
+      end: end ?? horizontal ?? all ?? 0.0,
+    );
+    return animate
+        ? _StyledAnimatedBuilder(
+            key: key,
+            builder: (animation) {
+              return AnimatedPadding(
+                padding: padding!,
+                duration: animation.duration,
+                curve: animation.curve,
+                child: this,
+              );
+            },
+          )
+        : Padding(key: key, padding: padding, child: this);
+  }
 
   Widget opacity(
     double opacity, {
@@ -161,10 +138,9 @@ extension StyledWidget on Widget {
     bool animate = false,
   }) =>
       animate
-          ? Builder(
+          ? _StyledAnimatedBuilder(
               key: key,
-              builder: (BuildContext context) {
-                final _StyledAnimatedModel animation = _getAnimation(context);
+              builder: (animation) {
                 return AnimatedAlign(
                   alignment: alignment,
                   duration: animation.duration,
@@ -545,8 +521,15 @@ extension StyledWidget on Widget {
         child: this,
       );
 
-  Widget clipOval({Key? key}) => ClipOval(
+  Widget clipOval({
+    Key? key,
+    CustomClipper<Rect>? clipper,
+    Clip clipBehavior = Clip.antiAlias,
+  }) =>
+      ClipOval(
         key: key,
+        clipper: clipper,
+        clipBehavior: clipBehavior,
         child: this,
       );
 
@@ -607,9 +590,10 @@ extension StyledWidget on Widget {
     BlendMode? backgroundBlendMode,
     BoxShape shape = BoxShape.rectangle,
     DecorationPosition position = DecorationPosition.background,
+    BoxDecoration? decoration,
     bool animate = false,
   }) {
-    final BoxDecoration decoration = BoxDecoration(
+    decoration ??= BoxDecoration(
       color: color,
       image: image,
       border: border,
@@ -902,6 +886,7 @@ extension StyledWidget on Widget {
     Offset? origin,
     AlignmentGeometry alignment = Alignment.center,
     bool transformHitTests = true,
+    FilterQuality? filterQuality,
     bool animate = false,
   }) =>
       animate
@@ -913,6 +898,7 @@ extension StyledWidget on Widget {
                   alignment: alignment,
                   origin: origin,
                   transformHitTests: transformHitTests,
+                  filterQuality: filterQuality,
                   duration: animation.duration,
                   curve: animation.curve,
                   child: this,
@@ -925,6 +911,7 @@ extension StyledWidget on Widget {
               alignment: alignment,
               origin: origin,
               transformHitTests: transformHitTests,
+              filterQuality: filterQuality,
               child: this,
             );
 
@@ -936,6 +923,7 @@ extension StyledWidget on Widget {
     Offset? origin,
     AlignmentGeometry alignment = Alignment.center,
     bool transformHitTests = true,
+    FilterQuality? filterQuality,
     bool animate = false,
   }) =>
       animate
@@ -950,6 +938,7 @@ extension StyledWidget on Widget {
                   ),
                   alignment: alignment,
                   transformHitTests: transformHitTests,
+                  filterQuality: filterQuality,
                   duration: animation.duration,
                   curve: animation.curve,
                   child: this,
@@ -963,6 +952,7 @@ extension StyledWidget on Widget {
               alignment: alignment,
               origin: origin,
               transformHitTests: transformHitTests,
+              filterQuality: filterQuality,
               child: this,
             );
 
@@ -970,6 +960,7 @@ extension StyledWidget on Widget {
     Key? key,
     required Offset offset,
     bool transformHitTests = true,
+    FilterQuality? filterQuality,
     bool animate = false,
   }) =>
       animate
@@ -980,6 +971,7 @@ extension StyledWidget on Widget {
                   transform:
                       Matrix4.translationValues(offset.dx, offset.dy, 0.0),
                   transformHitTests: transformHitTests,
+                  filterQuality: filterQuality,
                   duration: animation.duration,
                   curve: animation.curve,
                   child: this,
@@ -990,6 +982,7 @@ extension StyledWidget on Widget {
               key: key,
               offset: offset,
               transformHitTests: transformHitTests,
+              filterQuality: filterQuality,
               child: this,
             );
 
@@ -999,6 +992,7 @@ extension StyledWidget on Widget {
     Offset? origin,
     AlignmentGeometry? alignment,
     bool transformHitTests = true,
+    FilterQuality? filterQuality,
     bool animate = false,
   }) =>
       animate
@@ -1010,6 +1004,7 @@ extension StyledWidget on Widget {
                   origin: origin,
                   alignment: alignment,
                   transformHitTests: transformHitTests,
+                  filterQuality: filterQuality,
                   duration: animation.duration,
                   curve: animation.curve,
                   child: this,
@@ -1022,6 +1017,7 @@ extension StyledWidget on Widget {
               alignment: alignment,
               origin: origin,
               transformHitTests: transformHitTests,
+              filterQuality: filterQuality,
               child: this,
             );
 
@@ -1032,6 +1028,7 @@ extension StyledWidget on Widget {
     double? maxWidth,
     double? minHeight,
     double? maxHeight,
+    OverflowBoxFit fit = OverflowBoxFit.max,
     bool animate = false,
   }) =>
       animate
@@ -1044,6 +1041,7 @@ extension StyledWidget on Widget {
                   maxWidth: minWidth,
                   minHeight: minHeight,
                   maxHeight: maxHeight,
+                  fit: fit,
                   duration: animation.duration,
                   curve: animation.curve,
                   child: this,
@@ -1057,6 +1055,7 @@ extension StyledWidget on Widget {
               maxWidth: minWidth,
               minHeight: minHeight,
               maxHeight: maxHeight,
+              fit: fit,
               child: this,
             );
 
@@ -1069,6 +1068,10 @@ extension StyledWidget on Widget {
     ScrollController? controller,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     EdgeInsetsGeometry? padding,
+    Clip clipBehavior = Clip.hardEdge,
+    HitTestBehavior hitTestBehavior = HitTestBehavior.opaque,
+    String? restorationId,
+    ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior,
   }) =>
       SingleChildScrollView(
         key: key,
@@ -1079,6 +1082,10 @@ extension StyledWidget on Widget {
         controller: controller,
         dragStartBehavior: dragStartBehavior,
         padding: padding,
+        clipBehavior: clipBehavior,
+        hitTestBehavior: hitTestBehavior,
+        restorationId: restorationId,
+        keyboardDismissBehavior: keyboardDismissBehavior,
         child: this,
       );
 
@@ -1186,6 +1193,8 @@ extension StyledWidget on Widget {
     bool bottom = true,
     bool left = true,
     bool right = true,
+    EdgeInsets minimum = EdgeInsets.zero,
+    bool maintainBottomViewPadding = false,
   }) =>
       SafeArea(
         key: key,
@@ -1193,6 +1202,8 @@ extension StyledWidget on Widget {
         bottom: bottom,
         left: left,
         right: right,
+        minimum: minimum,
+        maintainBottomViewPadding: maintainBottomViewPadding,
         child: this,
       );
 
@@ -1326,11 +1337,13 @@ extension StyledWidget on Widget {
     Key? key,
     BoxFit fit = BoxFit.contain,
     AlignmentGeometry alignment = Alignment.center,
+    Clip clipBehavior = Clip.none,
   }) =>
       FittedBox(
         key: key,
         fit: fit,
         alignment: alignment,
+        clipBehavior: clipBehavior,
         child: this,
       );
 
@@ -1353,6 +1366,8 @@ extension StyledWidget on Widget {
   Widget card({
     Key? key,
     Color? color,
+    Color? shadowColor,
+    Color? surfaceTintColor,
     double? elevation,
     ShapeBorder? shape,
     bool borderOnForeground = true,
@@ -1363,6 +1378,8 @@ extension StyledWidget on Widget {
       Card(
         key: key,
         color: color,
+        shadowColor: shadowColor,
+        surfaceTintColor: surfaceTintColor,
         elevation: elevation,
         shape: shape,
         borderOnForeground: borderOnForeground,
@@ -1390,12 +1407,14 @@ extension StyledWidget on Widget {
     double elevation = 0.0,
     Color? color,
     Color? shadowColor,
+    Color? surfaceTintColor,
     TextStyle? textStyle,
     BorderRadiusGeometry? borderRadius,
     ShapeBorder? shape,
     bool borderOnForeground = true,
     Clip clipBehavior = Clip.none,
     Duration animationDuration = kThemeChangeDuration,
+    bool animateColor = false,
   }) =>
       Material(
         key: key,
@@ -1403,12 +1422,14 @@ extension StyledWidget on Widget {
         elevation: elevation,
         color: color,
         shadowColor: shadowColor,
+        surfaceTintColor: surfaceTintColor,
         textStyle: textStyle,
         borderRadius: borderRadius,
         shape: shape,
         borderOnForeground: borderOnForeground,
         clipBehavior: clipBehavior,
         animationDuration: animationDuration,
+        animateColor: animateColor,
         child: this,
       );
 
@@ -1419,6 +1440,7 @@ extension StyledWidget on Widget {
     void Function(PointerHoverEvent)? onHover,
     MouseCursor cursor = MouseCursor.defer,
     bool opaque = true,
+    HitTestBehavior? hitTestBehavior,
   }) =>
       MouseRegion(
         key: key,
@@ -1427,6 +1449,7 @@ extension StyledWidget on Widget {
         onHover: onHover,
         cursor: cursor,
         opaque: opaque,
+        hitTestBehavior: hitTestBehavior,
         child: this,
       );
 }

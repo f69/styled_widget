@@ -38,7 +38,9 @@ class _StyledAnimatedBuilder extends StatelessWidget {
         _StyledInheritedAnimation.of(context)?.animation;
     assert(
       animation != null,
-      '[styled_widget]: Tried to animate a widget without an animation specified. Define your animation using .animate() as an ancestor of the widget you are trying to animate',
+      '[styled_widget]: Tried to animate a widget without an animation specified. '
+      'Define your animation using .animate() as an ancestor of the widget you '
+      'are trying to animate',
     );
     return builder(animation!);
   }
@@ -212,6 +214,7 @@ class _AnimatedTransform extends ImplicitlyAnimatedWidget {
     this.child,
     super.curve,
     required super.duration,
+    this.filterQuality,
   });
 
   /// The [child] contained by the container.
@@ -232,6 +235,8 @@ class _AnimatedTransform extends ImplicitlyAnimatedWidget {
 
   /// The transformation matrix to apply before painting the container.
   final Matrix4? transform;
+
+  final FilterQuality? filterQuality;
 
   @override
   _AnimatedTransformState createState() => _AnimatedTransformState();
@@ -282,6 +287,7 @@ class _AnimatedTransformState
       alignment: _alignment?.evaluate(animation),
       origin: widget.origin,
       transformHitTests: widget.transformHitTests ?? true,
+      filterQuality: widget.filterQuality,
       child: widget.child,
     );
   }
@@ -464,6 +470,7 @@ class _AnimatedOverflowBox extends ImplicitlyAnimatedWidget {
     this.minHeight,
     this.maxHeight,
     this.alignment,
+    this.fit = OverflowBoxFit.max,
     super.curve,
     required super.duration,
   });
@@ -477,6 +484,7 @@ class _AnimatedOverflowBox extends ImplicitlyAnimatedWidget {
   final double? maxWidth;
   final double? minHeight;
   final double? maxHeight;
+  final OverflowBoxFit fit;
 
   @override
   _AnimatedOverflowBoxState createState() => _AnimatedOverflowBoxState();
@@ -527,6 +535,7 @@ class _AnimatedOverflowBoxState
       minHeight: _minHeight?.evaluate(animation),
       maxHeight: _maxHeight?.evaluate(animation),
       alignment: _alignment?.evaluate(animation) ?? Alignment.center,
+      fit: widget.fit,
       child: widget.child,
     );
   }
