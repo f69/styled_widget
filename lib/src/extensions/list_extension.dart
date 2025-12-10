@@ -91,7 +91,9 @@ extension StyledList<E> on List<Widget> {
         children: this,
       );
 
-// shortcut for column, which defaults to main axis MIN size
+  // shortcuts for popular particular cases
+
+  // shortcut for column, which defaults to main axis MIN size
   Widget toColumnMin({
     Key? key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,

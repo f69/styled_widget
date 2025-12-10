@@ -161,6 +161,8 @@ extension StyledWidget on Widget {
   Widget alignment(
     AlignmentGeometry alignment, {
     Key? key,
+    double? widthFactor,
+    double? heightFactor,
     bool animate = false,
   }) =>
       animate
@@ -169,6 +171,8 @@ extension StyledWidget on Widget {
               builder: (animation) {
                 return AnimatedAlign(
                   alignment: alignment,
+                  widthFactor: widthFactor,
+                  heightFactor: heightFactor,
                   duration: animation.duration,
                   curve: animation.curve,
                   child: this,
@@ -178,6 +182,8 @@ extension StyledWidget on Widget {
           : Align(
               key: key,
               alignment: alignment,
+              widthFactor: widthFactor,
+              heightFactor: heightFactor,
               child: this,
             );
 
@@ -421,6 +427,36 @@ extension StyledWidget on Widget {
               ),
               child: this,
             );
+
+  Widget blurry(
+    double sigma, {
+    Key? key,
+    bool animate = false,
+  }) =>
+      ImageFiltered(
+        key: key,
+        imageFilter: ImageFilter.blur(
+          sigmaX: sigma,
+          sigmaY: sigma,
+        ),
+        child: this,
+      );
+
+  Widget backdropFilter({
+    Key? key,
+    required ImageFilter filter,
+    BlendMode blendMode = BlendMode.srcOver,
+    bool enabled = true,
+    BackdropKey? backdropGroupKey,
+  }) =>
+      BackdropFilter(
+        key: key,
+        filter: filter,
+        blendMode: blendMode,
+        enabled: enabled,
+        backdropGroupKey: backdropGroupKey,
+        child: this,
+      );
 
   Widget borderRadius({
     Key? key,
@@ -789,6 +825,7 @@ extension StyledWidget on Widget {
     Key? key,
     double? width,
     double? height,
+    double? square,
     double minWidth = 0.0,
     double maxWidth = double.infinity,
     double minHeight = 0.0,
@@ -801,8 +838,8 @@ extension StyledWidget on Widget {
       minHeight: minHeight,
       maxHeight: maxHeight,
     );
-    constraints = (width != null || height != null)
-        ? constraints.tighten(width: width, height: height)
+    constraints = (width != null || height != null || square != null)
+        ? constraints.tighten(width: width ?? square, height: height ?? square)
         : constraints;
     return animate
         ? _StyledAnimatedBuilder(
@@ -866,6 +903,35 @@ extension StyledWidget on Widget {
           : ConstrainedBox(
               key: key,
               constraints: BoxConstraints.tightFor(height: height),
+              child: this,
+            );
+
+  Widget square(
+    double dimension, {
+    Key? key,
+    bool animate = false,
+  }) =>
+      animate
+          ? _StyledAnimatedBuilder(
+              key: key,
+              builder: (animation) {
+                return _AnimatedConstrainedBox(
+                  constraints: BoxConstraints.tightFor(
+                    width: dimension,
+                    height: dimension,
+                  ),
+                  duration: animation.duration,
+                  curve: animation.curve,
+                  child: this,
+                );
+              },
+            )
+          : ConstrainedBox(
+              key: key,
+              constraints: BoxConstraints.tightFor(
+                width: dimension,
+                height: dimension,
+              ),
               child: this,
             );
 
@@ -1776,6 +1842,48 @@ extension StyledWidget on Widget {
             Size.zero,
         child: this,
       );
+
+  Widget ignorePointer({
+    Key? key,
+    bool ignoring = true,
+  }) =>
+      IgnorePointer(
+        key: key,
+        ignoring: ignoring,
+        child: this,
+      );
+
+  Widget absorbPointer({
+    Key? key,
+    bool absorbing = true,
+  }) =>
+      AbsorbPointer(
+        key: key,
+        absorbing: absorbing,
+        child: this,
+      );
+
+  Widget repaintBoundary({Key? key}) => RepaintBoundary(
+        key: key,
+        child: this,
+      );
+
+  Widget intrinsicHeight({Key? key}) => IntrinsicHeight(
+        key: key,
+        child: this,
+      );
+
+  Widget intrinsicWidth({
+    Key? key,
+    double? stepWidth,
+    double? stepHeight,
+  }) =>
+      IntrinsicWidth(
+        key: key,
+        stepWidth: stepWidth,
+        stepHeight: stepHeight,
+        child: this,
+      );
 }
 
 extension SliverExt on Widget {
@@ -1813,4 +1921,14 @@ extension SliverExt on Widget {
 
     return SliverPadding(key: key, padding: padding, sliver: this);
   }
+
+  Widget sliverIgnorePointer({
+    Key? key,
+    bool ignoring = true,
+  }) =>
+      SliverIgnorePointer(
+        key: key,
+        ignoring: ignoring,
+        sliver: this,
+      );
 }
