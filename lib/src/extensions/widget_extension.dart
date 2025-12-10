@@ -559,6 +559,20 @@ extension StyledWidget on Widget {
         child: this,
       );
 
+  Widget clipRSuperellipse({
+    Key? key,
+    BorderRadiusGeometry borderRadius = BorderRadius.zero,
+    CustomClipper<RSuperellipse>? clipper,
+    Clip clipBehavior = Clip.antiAlias,
+  }) =>
+      ClipRSuperellipse(
+        key: key,
+        borderRadius: borderRadius,
+        clipper: clipper,
+        clipBehavior: clipBehavior,
+        child: this,
+      );
+
   Widget border({
     Key? key,
     double? all,
