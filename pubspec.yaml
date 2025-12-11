@@ -1,8 +1,8 @@
 name: styled_widget
 description: Simplifying your widget tree structure by defining widget using methods. Taking ispiration from CSS and SwiftUI
-version: 0.4.1
-homepage: https://github.com/ReinBentdal/styled_widget
-repository: https://github.com/ReinBentdal/styled_widget
+version: 0.4.2
+homepage: https://github.com/f69/styled_widget
+repository: https://github.com/f69/styled_widget
 
 environment:
   sdk: ">=2.17.0 <4.0.0"
