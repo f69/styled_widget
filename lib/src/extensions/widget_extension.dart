@@ -1165,6 +1165,24 @@ extension StyledWidget on Widget {
               child: this,
             );
 
+  Widget overflowFixedChild({
+    Key? key,
+    AlignmentGeometry alignment = Alignment.center,
+    double? width,
+    double? height,
+    bool animate = false,
+  }) =>
+      overflow(
+        key: key,
+        alignment: alignment,
+        minWidth: width,
+        maxWidth: width,
+        minHeight: height,
+        maxHeight: height,
+        fit: OverflowBoxFit.deferToChild,
+        animate: animate,
+      );
+
   Widget scrollable({
     Key? key,
     Axis scrollDirection = Axis.vertical,
