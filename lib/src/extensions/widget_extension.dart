@@ -1825,6 +1825,7 @@ extension StyledWidget on Widget {
         onTriggered: onTriggered,
         mouseCursor: mouseCursor,
         ignorePointer: ignorePointer,
+        child: child,
       );
 
   Widget simpleTooltip(
