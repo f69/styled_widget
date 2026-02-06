@@ -1801,7 +1801,6 @@ extension StyledWidget on Widget {
     void Function()? onTriggered,
     MouseCursor? mouseCursor,
     bool? ignorePointer,
-    Widget? child,
   }) =>
       Tooltip(
         key: key,
@@ -1825,7 +1824,7 @@ extension StyledWidget on Widget {
         onTriggered: onTriggered,
         mouseCursor: mouseCursor,
         ignorePointer: ignorePointer,
-        child: child,
+        child: this,
       );
 
   Widget simpleTooltip(
