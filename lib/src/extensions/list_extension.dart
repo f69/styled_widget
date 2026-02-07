@@ -4,21 +4,25 @@ extension StyledList<E> on List<Widget> {
   Widget toColumn({
     Key? key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisAlignment? mainAlign,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    CrossAxisAlignment? crossAlign,
     TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     TextBaseline? textBaseline,
     Widget? separator,
+    double spacing = 0.0,
   }) =>
       Column(
         key: key,
-        mainAxisAlignment: mainAxisAlignment,
+        mainAxisAlignment: mainAlign ?? mainAxisAlignment,
         mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
+        crossAxisAlignment: crossAlign ?? crossAxisAlignment,
         textDirection: textDirection,
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
+        spacing: spacing,
         children: separator != null && isNotEmpty
             ? (expand((child) => [child, separator]).toList()..removeLast())
             : this,
@@ -27,21 +31,25 @@ extension StyledList<E> on List<Widget> {
   Widget toRow({
     Key? key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisAlignment? mainAlign,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    CrossAxisAlignment? crossAlign,
     TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     TextBaseline? textBaseline,
     Widget? separator,
+    double spacing = 0.0,
   }) =>
       Row(
         key: key,
-        mainAxisAlignment: mainAxisAlignment,
+        mainAxisAlignment: mainAlign ?? mainAxisAlignment,
         mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
+        crossAxisAlignment: crossAlign ?? crossAxisAlignment,
         textDirection: textDirection,
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
+        spacing: spacing,
         children: separator != null && isNotEmpty
             ? (expand((child) => [child, separator]).toList()..removeLast())
             : this,
@@ -97,65 +105,77 @@ extension StyledList<E> on List<Widget> {
   Widget toColumnMin({
     Key? key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisAlignment? mainAlign,
     MainAxisSize mainAxisSize = MainAxisSize.min,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    CrossAxisAlignment? crossAlign,
     TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     TextBaseline? textBaseline,
     Widget? separator,
+    double spacing = 0.0,
   }) =>
       toColumn(
         key: key,
-        mainAxisAlignment: mainAxisAlignment,
+        mainAxisAlignment: mainAlign ?? mainAxisAlignment,
         mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
+        crossAxisAlignment: crossAlign ?? crossAxisAlignment,
         textDirection: textDirection,
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
         separator: separator,
+        spacing: spacing,
       );
 
   // shortcut for row, which defaults to main axis MIN size
   Widget toRowMin({
     Key? key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisAlignment? mainAlign,
     MainAxisSize mainAxisSize = MainAxisSize.min,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    CrossAxisAlignment? crossAlign,
     TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     TextBaseline? textBaseline,
     Widget? separator,
+    double spacing = 0.0,
   }) =>
       toRow(
         key: key,
-        mainAxisAlignment: mainAxisAlignment,
+        mainAxisAlignment: mainAlign ?? mainAxisAlignment,
         mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
+        crossAxisAlignment: crossAlign ?? crossAxisAlignment,
         textDirection: textDirection,
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
         separator: separator,
+        spacing: spacing,
       );
 
   // shortcut for row, which defaults to spaceBetween alignment on MAIN axis
   Widget toRowBetween({
     Key? key,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.spaceBetween,
+    MainAxisAlignment? mainAlign,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    CrossAxisAlignment? crossAlign,
     TextDirection? textDirection,
     VerticalDirection verticalDirection = VerticalDirection.down,
     TextBaseline? textBaseline,
     Widget? separator,
+    double spacing = 0.0,
   }) =>
       toRow(
         key: key,
-        mainAxisAlignment: mainAxisAlignment,
+        mainAxisAlignment: mainAlign ?? mainAxisAlignment,
         mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment,
+        crossAxisAlignment: crossAlign ?? crossAxisAlignment,
         textDirection: textDirection,
         verticalDirection: verticalDirection,
         textBaseline: textBaseline,
         separator: separator,
+        spacing: spacing,
       );
 }
