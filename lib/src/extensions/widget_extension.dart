@@ -1961,6 +1961,18 @@ extension StyledWidget on Widget {
         endDrawerEnableOpenDragGesture: endDrawerEnableOpenDragGesture,
         restorationId: restorationId,
       );
+
+  Widget popScope<T>({
+    Key? key,
+    bool canPop = true,
+    PopInvokedWithResultCallback<T>? onPop,
+  }) =>
+      PopScope<T>(
+        key: key,
+        canPop: canPop,
+        onPopInvokedWithResult: onPop,
+        child: this,
+      );
 }
 
 extension SliverExt on Widget {
