@@ -1973,6 +1973,37 @@ extension StyledWidget on Widget {
         onPopInvokedWithResult: onPop,
         child: this,
       );
+
+  Widget visible(
+    bool visible, {
+    Key? key,
+    Widget replacement = const SizedBox.shrink(),
+    bool maintainState = false,
+    bool maintainAnimation = false,
+    bool maintainSize = false,
+    bool maintainSemantics = false,
+    bool maintainInteractivity = false,
+    bool maintainFocusability = false,
+    bool maintain = false,
+  }) =>
+      maintain
+          ? Visibility.maintain(
+              key: key,
+              child: this,
+              visible: visible,
+            )
+          : Visibility(
+              key: key,
+              child: this,
+              replacement: replacement,
+              visible: visible,
+              maintainState: maintainState,
+              maintainAnimation: maintainAnimation,
+              maintainSize: maintainSize,
+              maintainSemantics: maintainSemantics,
+              maintainInteractivity: maintainInteractivity,
+              maintainFocusability: maintainFocusability,
+            );
 }
 
 extension SliverExt on Widget {
