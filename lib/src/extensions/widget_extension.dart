@@ -1985,24 +1985,25 @@ extension StyledWidget on Widget {
     bool maintainInteractivity = false,
     bool maintainFocusability = false,
     bool maintain = false,
+    bool keepSize = false,
   }) =>
       maintain
           ? Visibility.maintain(
               key: key,
-              child: this,
               visible: visible,
+              child: this,
             )
           : Visibility(
               key: key,
-              child: this,
               replacement: replacement,
               visible: visible,
-              maintainState: maintainState,
-              maintainAnimation: maintainAnimation,
-              maintainSize: maintainSize,
+              maintainState: maintainState || keepSize,
+              maintainAnimation: maintainAnimation || keepSize,
+              maintainSize: maintainSize || keepSize,
               maintainSemantics: maintainSemantics,
               maintainInteractivity: maintainInteractivity,
               maintainFocusability: maintainFocusability,
+              child: this,
             );
 }
 
